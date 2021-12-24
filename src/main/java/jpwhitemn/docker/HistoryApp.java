@@ -16,7 +16,7 @@ public class HistoryApp {
 
     private static Logger logger = LogManager.getLogger(HistoryApp.class);
     private static String CONFIG = "./config/config.properties";
-	private static final Level LEVEL = Level.DEBUG;
+	private static final Level LEVEL = Level.INFO;
 
     public static void main(String[] args) {
 		Configurator.setRootLevel(LEVEL);
