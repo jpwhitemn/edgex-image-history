@@ -1,0 +1,31 @@
+## Active images
+from(bucket: "edgexdockerstats")
+  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+  |> filter(fn: (r) => r["_measurement"] == "stat" and r["ARCHIVED"] == "false" and r["_field"] == "count")
+  |> drop(columns:["_measurement", "_field", "_start", "_stop", "ARCHIVED"])
+  |> sort(columns: ["_value","name"])
+  
+
+ ## Archived images
+from(bucket: "edgexdockerstats")
+  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+  |> filter(fn: (r) => r["_measurement"] == "stat" and r["ARCHIVED"] == "true" and r["_field"] == "count")
+  |> drop(columns:["_measurement", "_field", "_start", "_stop", "ARCHIVED"])
+  |> sort(columns: ["_value","name"]) 
+
+  
+ ## Total active image pulls
+ from(bucket: "edgexdockerstats")
+  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+  |> filter(fn: (r) => r["_measurement"] == "stat" and r["ARCHIVED"] == "false" and r["_field"] == "count")
+  |> last()
+  |> group(columns: ["_field"])
+  |> sum(column: "_value")
+  
+ ## Total archived image pulls
+ from(bucket: "edgexdockerstats")
+  |> range(start: v.timeRangeStart, stop: v.timeRangeStop)
+  |> filter(fn: (r) => r["_measurement"] == "stat" and r["ARCHIVED"] == "true" and r["_field"] == "count")
+  |> last()
+  |> group(columns: ["_field"])
+  |> sum(column: "_value")
